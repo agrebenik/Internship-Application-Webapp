@@ -1,0 +1,146 @@
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.c-shadow {
+    box-shadow: 1px 5px 5px #00000016
+}
+
+.c-rshadow {
+    box-shadow: 13px 0px 30px #00000016
+}
+
+.hamburg-menu {
+    font-size: 27px;
+    color: #757575;
+    padding: 21px;
+    width: 90px;
+    float: left;
+}
+
+.mobile-menu-bar {
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    position: fixed;
+    left: 0px;
+    top: 16px;
+}
+
+.c-login-container {
+    height: 100px;
+    padding: 20px;
+    float: right;
+}
+
+.buffer {
+    width: 100%;
+    height: 70px;
+}
+
+.sort-bar {
+    width: 100%;
+    height: 50px;
+}
+
+.apps-container {
+    width: 100%;
+}
+
+.c-app {
+    width: 90%;
+    background-color: white;
+    height: 60px;
+    margin-left: 5%;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+}
+
+.c-app-name {
+    width: 100px;
+    color: #757575;
+    padding: 20px;
+    font-size: 19px;
+    float: left;
+}
+
+.c-app-strip {
+    width: 12px;
+    height: 60px;
+    background-color: #a3a3a3;
+    float: right;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.m-icon {
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.m-item {
+    width: 90%;
+    padding: 15px;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 10px;
+    color: #757575;
+}
+
+.m-login-container {
+    width: 50%;
+    height: 53px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 20px;
+    position: fixed;
+    bottom: 0px;
+    background-color: white;
+}
+
+.c-signout {
+    height: 36px;
+    font-size: 13px;
+    line-height: 34px;
+    font-family: Roboto,arial,sans-serif;
+    text-decoration: none;
+    color: #757575;
+    padding-right: 15px;
+}
+
+.sliding-menu { 
+    position: fixed;
+    left: -100%;
+    top: 0px;
+    width: 60%;
+    height: 100%;
+    background-color: #ECEFF1;
+    z-index: 99;
+    color: #000000de;
+    transition: 0.5s;
+}
+
+.menu-top-bar {
+    border-top: 16px solid #4affb9;
+    width: 100%;
+    height: 70px;
+    background-color: white;
+}
+
+#dark-cover {
+    pointer-events: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #00000023;
+    z-index: 50;
+    opacity: 0;
+    transition: 0.5s;
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.6.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.6.2/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.6.2/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.6.2/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.6.2/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+                        
+    <!-- load GPL onto webpage -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script src="https://kit.fontawesome.com/2cc13666b9.js" crossorigin="anonymous"></script>
+
+    <meta name="google-signin-client_id" content="840303920764-8gv406sqcl1tfkhvfmvulp4fc775etd9.apps.googleusercontent.com">
+
+    <link rel=stylesheet href="index.css" type="text/css">
+
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      .mobile-content {visibility: hidden; height: 0px;}
+      .desktop-content {visibility: visible;}
+      @media (max-width: 600px) {
+        body { background: #ECEFF1; box-shadow: none; }
+        body { border-top: 16px solid #4affb9; color: rgba(0,0,0,0.87); margin: 0; padding: 0;}
+        .mobile-content { visibility: visible;}
+        .desktop-content {visibility: hidden; height: 0px;}
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- mobile content -->
+    <div class="mobile-content">
+      <div class="mobile-menu-bar c-shadow">
+        <div class="hamburg-menu" onclick="openMenu();">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div style="float: right; padding: 17px;">
+          <div style="border-radius: 100%; width: 36px; height: 36px; background-color: white; margin-left: 15px;">
+            <img id="mobile" class="profile-picture" style="width: 36px; height: 36px; border-radius: 100%;" src="media/deault-photo-2.png"/>
+          </div>
+        </div>
+      </div>
+      <div id="main-menu" class="sliding-menu c-rshadow">
+        <div class="menu-top-bar">
+          <div class="hamburg-menu" onclick="closeMenu();">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+        </div>
+        <div class="m-item">
+          <span class="m-icon"><i class="fas fa-home"></i></span>
+          Home
+        </div>
+        <div class="m-item">
+          <span class="m-icon"><i class="fas fa-th"></i></span>
+          Applications
+        </div>
+        <div class="m-item">
+          <span class="m-icon"><i class="fas fa-chart-pie"></i></span>
+          Stats
+        </div>
+        <div class="m-item">
+          <span class="m-icon"><i class="fas fa-globe-americas"></i></span>
+          Global
+        </div>
+        <div class="m-login-container">
+          <div class="g-signin2 fl" data-onsuccess="onSignIn"></div>
+          <a class="c-signout fr" href="#" onclick="signOut();">Sign out</a>
+        </div>
+      </div>
+      <div id="secion-home"></div>
+      <div id="secion-apps">
+        <div class="buffer"></div>
+        <div class="sort-bar"></div>
+        <div class="apps-container">
+          <div class="c-app c-shadow">
+            <div class="c-app-name">Microsoft</div>
+            <div class="c-app-strip"></div>
+          </div>
+        </div>
+      </div>
+      <div id="secion-stats"></div>
+      <div id="secion-global"></div>
+      <div id="dark-cover"></div>
+    </div>
+
+    <!-- desktop content -->
+    <div class="desktop-content">
+      <div class="c-login-container">
+        <div style="width: 70px; height: 72px; float: left;">
+          <div style="border-radius: 100%; width: 36px; height: 36px; background-color: white; margin-left: 15px;">
+            <img class="profile-picture" style="width: 36px; height: 36px; border-radius: 100%;" src="media/deault-photo.png"/>
+          </div>
+        </div>
+        <div class="fl">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          <a class="c-signout" href="#" onclick="signOut();">Sign out</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      
+      function generateHash(sett, cut=-1) {
+        let e = "";
+        let p = 0;
+        let a = 0;
+        for(let i in sett) {
+          let c = sett.charCodeAt(i);
+          let r = sett.charCodeAt(sett.length - i - 1);
+          let d1 = c * 23 + p * 3 + r * 7;
+          let d2 = c * 101 + p * 7 + r * 3;
+          if (a % 2 == 0) {
+            e += (d1 + d2 * 3).toString(16);
+          } else {
+            e += (d2 + d1 * 3).toString(16);
+          }
+          p = c;
+          a++;
+        }
+        if(cut > 0) {
+          return e.substr(0, cut);
+        }
+        return e;
+      }
+      
+      let signedIn = false;
+      let profile = undefined;
+      let menu = document.getElementById("main-menu");
+      let cover = document.getElementById("dark-cover");
+      let DB = undefined;
+      let ID = "";
+      let UID = "";
+
+      function openMenu() {
+        menu.style.left = '0%';
+        cover.style.opacity = 1; 
+        cover.style.pointerEvents = "auto";
+        cover.onclick = () => {closeMenu();}
+      }
+
+      function closeMenu() {
+        menu.style.left = '-100%';
+        cover.style.opacity = 0;
+        cover.style.pointerEvents = "none";
+      }
+
+      function onSignIn(googleUser) {
+        profile = googleUser.getBasicProfile();
+        signedIn = true;
+        console.log(profile);
+
+        ID = profile.getId();
+        UID = generateHash(ID, 20);
+        console.log('UID: ' + UID);
+        // console.log('ID: ' + profile.getId());
+        // console.log('Name: ' + profile.getName());
+
+        // console.log('Email: ' + profile.getEmail());
+        
+        let imageUrl = profile.getImageUrl();
+        let toChange = document.getElementsByClassName("profile-picture");
+        for(let i in toChange) {
+          toChange[i].src = imageUrl;
+        }
+      }
+
+      function signOut() {
+        let auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          signedIn = false;
+          let toChange = document.getElementsByClassName("profile-picture");
+          for(let i in toChange) {
+            toChange[i].src = "media/deault-photo.png";
+            if(toChange[i].id == "mobile") {
+              toChange[i].src = "media/deault-photo-2.png";
+            }
+          }
+        });
+      }
+      
+      let userList = undefined;
+
+      document.addEventListener('DOMContentLoaded', function() {
+
+        
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          
+          // load our firebase app
+          let app = firebase.app();
+          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+
+          DB = firebase.database();
+          if (DB !== undefined) {
+            let users = DB.ref("/users");
+            users.on("value", function(snapshot) {
+              userList = snapshot.val();
+              console.log(userList);
+            }, function(errorObject) {
+              console.log("The read failed:", errorObject);
+            });
+          }
+
+        } catch (e) {
+          console.log(e);
+        }
+
+      });
+
+      function allDataLoaded() {
+        if(userList[UID] == undefined) {
+          // we need to create a new user
+          console.log("new user ["+UID+"]");
+          
+        } else {
+          console.log("existing user ["+UID+"]:",userList[UID]);
+        }
+      }
+
+      let iv = setInterval(() => {
+        if (userList != undefined && profile != undefined) {
+          allDataLoaded();
+          clearInterval(iv);
+        }
+      }, 500);
+    </script>
+  </body>
+</html>
