@@ -51,6 +51,57 @@
     width: 100%;
 }
 
+.new-app-button {
+    width: 90%;
+    background-color: white;
+    height: 60px;
+    margin-left: 5%;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+}
+
+.new-app-add { }
+
+.new-app-creation-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    top: 0%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.178);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.new-app-creation-ui {
+    position: fixed;
+    width: 90%;
+    height: 80%;
+    left: 5%;
+    top: 10%;
+    z-index: 99999;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0;
+    transition: 0.1s;
+    pointer-events: none;
+}
+
+.creation-ui-header {
+    width: 100%;
+    height: 50px;
+}
+
+.creation-header-exit {
+    float: left;
+    font-size: 22px;
+    padding: 10px;
+    color: #757575;
+}
+
 .c-app {
     width: 90%;
     background-color: white;

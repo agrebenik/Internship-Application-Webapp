@@ -87,6 +87,17 @@
             <div class="c-app-strip"></div>
           </div>
         </div>
+        <div class="new-app-button c-shadow" onclick="showAppCreation();">
+          <img class="new-app-add" style="width: 26px; height: 26px; border-radius: 100%; padding: 16px;" src="media/add-item.png"/>
+        </div>
+        <div class="new-app-creation-overlay" id="new-app-overlay" onclick=""></div>
+        <div class="new-app-creation-ui c-shadow" id="new-app-ui">
+          <div class="creation-ui-header">
+            <div class="creation-header-exit" onclick="hideAppCreation();">
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="secion-stats"></div>
       <div id="secion-global"></div>
@@ -141,6 +152,38 @@
       let ID = "";
       let UID = "";
 
+      function showAppCreation() {
+        let creationUI = document.getElementById("new-app-ui");
+        let overlay = document.getElementById("new-app-overlay");
+        creationUI.style.opacity = 1;
+        creationUI.style.pointerEvents = "auto";
+        showOverlay();
+        overlay.onclick = () => {
+          hideAppCreation();
+        }
+      }
+
+      function hideAppCreation() {
+          let creationUI = document.getElementById("new-app-ui");
+          let overlay = document.getElementById("new-app-overlay");
+          hideOverlay();
+          creationUI.style.opacity = 0;
+          creationUI.style.pointerEvents = "none";
+          overlay.onclick = () => {};
+      }
+
+      function hideOverlay() {
+        let overlay = document.getElementById("new-app-overlay");
+        overlay.style.opacity = 0;
+        overlay.style.pointerEvents = "none";
+      }
+
+      function showOverlay() {
+        let overlay = document.getElementById("new-app-overlay");
+        overlay.style.opacity = 1;
+        overlay.style.pointerEvents = "auto";
+      }
+
       function openMenu() {
         menu.style.left = '0%';
         cover.style.opacity = 1; 
@@ -189,6 +232,7 @@
       }
       
       let userList = undefined;
+      let appsList = undefined;
 
       document.addEventListener('DOMContentLoaded', function() {
 
@@ -213,10 +257,10 @@
             let users = DB.ref("/users");
             users.on("value", function(snapshot) {
               userList = snapshot.val();
-              console.log(userList);
             }, function(errorObject) {
-              console.log("The read failed:", errorObject);
+              console.log("User list read failed:", errorObject);
             });
+            keepAppsListUpToDate(1000);
           }
 
         } catch (e) {
@@ -225,14 +269,65 @@
 
       });
 
+      function keepAppsListUpToDate(delta) {
+        let iv = setInterval(function() {
+          let apps = DB.ref("/application");
+            apps.on("value", function(snapshot) {
+              appsList = snapshot.val();
+            }, function(errorObject) {
+              console.log("Application list read failed:", errorObject);
+            })
+        }, delta);
+      }
+
       function allDataLoaded() {
+        let userRef = 'users/' + UID;
         if(userList[UID] == undefined) {
           // we need to create a new user
           console.log("new user ["+UID+"]");
-          
+          // tell the server to create a new user and reset its credentials
+          firebase.database().ref(userRef).set({
+            applications: ["",""],
+            lastSignedIn: Date.now()
+          }).then(()=>{userDataUpdatesFinished()});
         } else {
           console.log("existing user ["+UID+"]:",userList[UID]);
+          // update our last logged in time
+          let updates = {};
+          if (userList[UID].applications === undefined) {
+            updates[userRef + '/applications'] = ["", ""];
+          }
+          updates[userRef + '/lastSignedIn'] = Date.now();
+          firebase.database().ref().update(updates);
+          userDataUpdatesFinished();
         }
+      }
+
+      function addApplication(name, status, auid) {
+        let app = {
+          uid: auid,
+          name: name,
+          link: "",
+          status: status,
+          events: {
+            created: Date.now(),
+          }
+        }
+        let updates = {};
+        let userRef = 'users/' + UID;
+        userList[UID].applications.push(app);
+        updates[userRef + '/applications'] = userList[UID].applications;
+        firebase.database().ref().update(updates);
+        // let iv = setInterval( function() {
+        //     if (appsList !== undefined) {
+              
+        //       clearInterval(iv);
+        //     }
+        //   }, 1000);
+      }
+
+      function userDataUpdatesFinished() {
+        addApplication("test app", "not applied", 210101);
       }
 
       let iv = setInterval(() => {
