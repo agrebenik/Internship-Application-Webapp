@@ -99,7 +99,7 @@
           </div>
           <div class="creation-ui-feilds">
             <div class="header-input">
-              <input type="text" id="input1" class="name-input" placeholder=" " 
+              <input type="text" id="input1" class="name-input" placeholder=" "
                 onfocus="document.getElementById('label1').style.opacity = 0;"
                 onblur="unfocusLabel(this.value);">
               <span class="name-label" id="label1">Company Name</span>
@@ -133,6 +133,13 @@
 
     <script>
       
+      function clearNewAppForm() {
+        let ip = document.getElementById('input1');
+        ip.value = "";
+        let lb = document.getElementById('label1');
+        unfocusLabel("");
+      }
+
       function unfocusLabel(val) {
         let lb = document.getElementById('label1');
         if (val < 1) {
@@ -189,6 +196,7 @@
           creationUI.style.opacity = 0;
           creationUI.style.pointerEvents = "none";
           overlay.onclick = () => {};
+          clearNewAppForm();
       }
 
       function hideOverlay() {

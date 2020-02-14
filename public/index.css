@@ -130,6 +130,12 @@
     margin-left: 30px;
     padding-left: 9px;
     font-size: 16px;
+    border: none;
+    border-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #757575;
+    color: #757575;
 }
 
 .name-label {
@@ -170,10 +176,29 @@
 .c-app-strip {
     width: 12px;
     height: 60px;
-    background-color: #a3a3a3;
     float: right;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
+}
+
+.colorNone {
+    background-color: #A3A3A3;
+}
+
+.colorApplied {
+    background-color: #E1C6B9;
+}
+
+.colorInterview {
+    background-color: #4A8CB9;
+}
+
+.colorRejected {
+    background-color: #D933B9;
+}
+
+.colorOffer {
+    background-color: #4A33B9;
 }
 
 .m-icon {
