@@ -97,6 +97,18 @@
               <i class="fas fa-times"></i>
             </div>
           </div>
+          <div class="creation-ui-feilds">
+            <div class="header-input">
+              <input type="text" id="input1" class="name-input" placeholder=" " 
+                onfocus="document.getElementById('label1').style.opacity = 0;"
+                onblur="unfocusLabel(this.value);">
+              <span class="name-label" id="label1">Company Name</span>
+              <span class="focus-bg"></span>
+            </div>
+          </div>
+          <div class="creation-ui-footer">
+            <div class="creation-ui-create-button c-shadow">Create</div>
+          </div>
         </div>
       </div>
       <div id="secion-stats"></div>
@@ -121,6 +133,13 @@
 
     <script>
       
+      function unfocusLabel(val) {
+        let lb = document.getElementById('label1');
+        if (val < 1) {
+         lb.style.opacity = 1; 
+        }
+      }
+
       function generateHash(sett, cut=-1) {
         let e = "";
         let p = 0;
@@ -327,7 +346,7 @@
       }
 
       function userDataUpdatesFinished() {
-        addApplication("test app", "not applied", 210101);
+        // addApplication("test app", "not applied", 210101);
       }
 
       let iv = setInterval(() => {
