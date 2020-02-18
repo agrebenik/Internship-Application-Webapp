@@ -105,9 +105,29 @@
               <span class="name-label" id="label1">Company Name</span>
               <span class="focus-bg"></span>
             </div>
+            <div class="radio-status-selection">
+              <div class="radio-container">
+                <div class="c-radio-option">
+                  <input type="radio" id="not-applied-radio" name="status" value="not-applied" checked="checked">
+                  <label for="not-applied-radio">Not Applied</label><br>  
+                </div>
+                <div class="c-radio-option">
+                  <input type="radio" id="applied-radio" name="status" value="applied">
+                  <label for="applied-radio">Applied</label><br>
+                </div>
+                <div class="c-radio-option">
+                  <input type="radio" id="interview-radio" name="status" value="interview">
+                  <label for="interview-radio">Interview</label>
+                </div>
+                <div class="c-radio-option">
+                  <input type="radio" id="rejected-radio" name="status" value="interview">
+                  <label for="rejected-radio">Rejected</label>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="creation-ui-footer">
-            <div class="creation-ui-create-button c-shadow">Create</div>
+            <div class="creation-ui-create-button c-shadow" onclick="attemptToCreateApp();">Create</div>
           </div>
         </div>
       </div>
